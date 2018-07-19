@@ -59,14 +59,15 @@ AppAsset::register($this);
             ],
             
             // ['label' => 'Rincian Inkonsistensi', 'url' => ['/site/contact']],
-            [
-                'label' => 'Rincian Inkonsistensi',
-                'items' => [
-                    ['label' => 'Tampilkan Semua', 'url' => ['/site/contact']],
-                    '<li class="divider"></li>',
-                    ['label' => 'Tampilkan Inkonsistensi Saja', 'url' => ['/site/xyz']],
-                ],
-            ],
+            
+            // [
+            //     'label' => 'Rincian Inkonsistensi',
+            //     'items' => [
+            //         ['label' => 'Tampilkan Semua', 'url' => ['/site/contact']],
+            //         '<li class="divider"></li>',
+            //         ['label' => 'Tampilkan Inkonsistensi Saja', 'url' => ['/site/xyz']],
+            //     ],
+            // ],
         ],
     ]);
     NavBar::end();
