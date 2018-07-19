@@ -10,7 +10,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'sqlsrv:Server=10.74.0.200\SOUT2017;Database=SOUT2017Sampel;ConnectionPooling=0',
+    // 'dsn' => 'sqlsrv:Server=10.74.0.200\SOUT2017;Database=SOUT2017Sampel;ConnectionPooling=0',
+    'dsn' => 'sqlsrv:Server=10.74.0.200\SUTAS2018;Database=SUTAS2018;ConnectionPooling=0',
     // 'dsn' => 'sqlsrv:Server=127.0.0.1\SAKERNAS2017;Database=SOUT2017Sampel;ConnectionPooling=0',
     // 'dsn' => 'sqlsrv:Server=127.0.0.1\sqlexpress;Database=SOUT2017Sampel;ConnectionPooling=0',
     'username' => 'supas_oye',

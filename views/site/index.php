@@ -8,68 +8,50 @@ $clean_total = 0;
 $error_total = 0;
 $blm_entri_total = 0;
 
-// Ternak
-$sql = "SELECT [status_dok] FROM [SOUT2017Sampel].[dbo].[t_rt_ternak] where [status_dok]='C'";
-$clean_ternak = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql . ') as count_alias')->queryScalar();
 
-$sql2 = "SELECT [status_dok] FROM [SOUT2017Sampel].[dbo].[t_rt_ternak] where [status_dok]='E'";
-$error_ternak = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql2 . ') as count_alias')->queryScalar();
-$total_ternak = 4220;
-$blm_entri_ternak = $total_ternak - $clean_ternak - $error_ternak;
+// L2
+$sql = "SELECT [status_dok] FROM [SUTAS2018].[dbo].[L2_rt] where [status_dok]='C'";
+$clean_l2 = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql . ') as count_alias')->queryScalar();
 
-$clean_total = $clean_total + $clean_ternak;
-$error_total = $error_total + $error_ternak;
-$blm_entri_total = $blm_entri_total + $blm_entri_ternak;
+$sql2 = "SELECT [status_dok] FROM [SUTAS2018].[dbo].[L2_rt] where [status_dok]='E'";
+$error_l2 = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql2 . ') as count_alias')->queryScalar();
+$total_l2 = 110904;
+$blm_entri_l2 = $total_l2 - $clean_l2 - $error_l2;
 
-$clean_ternak = $clean_ternak / $total_ternak;
-$error_ternak = $error_ternak / $total_ternak;
-$blm_entri_ternak = $blm_entri_ternak / $total_ternak;
+$clean_total = $clean_total + $clean_l2;
+$error_total = $error_total + $error_l2;
+$blm_entri_total = $blm_entri_total + $blm_entri_l2;
 
-// Palawija
-$sql = "SELECT [status_dok] FROM [SOUT2017Sampel].[dbo].[t_rt_tp] where [status_dok]='C' AND [flag_dok]='spw'";
-$clean_palawija = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql . ') as count_alias')->queryScalar();
+$clean_l2 = $clean_l2 / $total_l2;
+$error_l2 = $error_l2 / $total_l2;
+$blm_entri_l2 = $blm_entri_l2 / $total_l2;
 
-$sql2 = "SELECT [status_dok] FROM [SOUT2017Sampel].[dbo].[t_rt_tp] where [status_dok]='E' AND [flag_dok]='spw'";
-$error_palawija = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql2 . ') as count_alias')->queryScalar();
-$total_palawija = 4627;
-$blm_entri_palawija = $total_palawija - $clean_palawija - $error_palawija;
+// L1
+$sql = "SELECT [status_dok] FROM [SUTAS2018].[dbo].[m_bs] where [status_dok]='C'";
+$clean_l1 = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql . ') as count_alias')->queryScalar();
 
-$clean_total = $clean_total + $clean_palawija;
-$error_total = $error_total + $error_palawija;
-$blm_entri_total = $blm_entri_total + $blm_entri_palawija;
+$sql2 = "SELECT [status_dok] FROM [SUTAS2018].[dbo].[m_bs] where [status_dok]='E'";
+$error_l1 = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql2 . ') as count_alias')->queryScalar();
+$total_l1 = 1725;
+$blm_entri_l1 = $total_l1 - $clean_l1 - $error_l1;
 
-$clean_palawija = $clean_palawija / $total_palawija;
-$error_palawija = $error_palawija / $total_palawija;
-$blm_entri_palawija = $blm_entri_palawija / $total_palawija;
+$clean_total = $clean_total + $clean_l1;
+$error_total = $error_total + $error_l1;
+$blm_entri_total = $blm_entri_total + $blm_entri_l1;
 
-// Padi
-$sql = "SELECT [status_dok] FROM [SOUT2017Sampel].[dbo].[t_rt_tp] where [status_dok]='C' AND [flag_dok]='spd'";
-$clean_padi = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql . ') as count_alias')->queryScalar();
-
-$sql2 = "SELECT [status_dok] FROM [SOUT2017Sampel].[dbo].[t_rt_tp] where [status_dok]='E' AND [flag_dok]='spd'";
-$error_padi = Yii::$app->db->createCommand('SELECT COUNT(*) FROM (' . $sql2 . ') as count_alias')->queryScalar();
-$total_padi = 2126;
-$blm_entri_padi = $total_padi - $clean_padi - $error_padi;
-
-$clean_total = $clean_total + $clean_padi;
-$error_total = $error_total + $error_padi;
-$blm_entri_total = $blm_entri_total + $blm_entri_padi;
-
-$clean_padi = $clean_padi / $total_padi;
-$error_padi = $error_padi / $total_padi;
-$blm_entri_padi = $blm_entri_padi / $total_padi;
+$clean_l1 = $clean_l1 / $total_l1;
+$error_l1 = $error_l1 / $total_l1;
+$blm_entri_l1 = $blm_entri_l1 / $total_l1;
 
 // Total
-$total_total = $total_padi + $total_palawija + $total_ternak;
+$total_total = $total_l1 + $total_l2;
 $clean_total = $clean_total / $total_total;
 $error_total = $error_total / $total_total;
 $blm_entri_total = $blm_entri_total / $total_total;
 
-// https://stackoverflow.com/questions/676824/how-to-calculate-the-difference-between-two-dates-using-php
 $current_date = new DateTime();
-$deadline_date = new DateTime('08/31/2017');
+$deadline_date = new DateTime('08/31/2018');
 $diff = $current_date->diff($deadline_date);
-// print_r($diff->days);
 
 
 
@@ -126,25 +108,25 @@ function printPie($judul, $clean, $error, $blm_entri)
     <div class="body-content">
         <div class="alert alert-warning alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <p><strong>Warning!</strong> Pengolahan SOUT akan berakhir <?php print_r($diff->days); ?> hari lagi</p>
+            <p><strong>Warning!</strong> Pengolahan SUTAS 2018 akan berakhir <?php print_r($diff->days); ?> hari lagi</p>
             <p>- Jumlah Entrian Total <?php echo '<strong>'.($clean_total+$error_total)*$total_total.'</strong>'.' dari '.'<strong>'.$total_total.'</strong>'.' dokumen' ?></p>
             <p>- Jumlah Clean Total <?php echo '<strong>'.($clean_total)*$total_total.'</strong>'.' dari '.'<strong>'.$total_total.'</strong>'.' dokumen' ?></p>
         </div>
 
         <div class="row">
             <div class="col-lg-4">
-                <?php printPie('Progress Entri Padi', $clean_padi, $error_padi, $blm_entri_padi); ?>
+                <?php printPie('Progress Entri L1', $clean_l1, $error_l1, $blm_entri_l1); ?>
             </div>
             <div class="col-lg-4">
-                <?php printPie('Progress Entri Palawija', $clean_palawija, $error_palawija, $blm_entri_palawija); ?>
+                <?php printPie('Progress Entri L2', $clean_l2, $error_l2, $blm_entri_l2); ?>
             </div>
             <div class="col-lg-4">
-                <?php printPie('Progress Entri Peternakan', $clean_ternak, $error_ternak, $blm_entri_ternak); ?>
+                <?php printPie('Progress Entri Total', $clean_total, $error_total, $blm_entri_total); ?>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-4">
-                <?php printPie('Progress Entri Total', $clean_total, $error_total, $blm_entri_total); ?>
+                <!-- <?php //printPie('Progress Entri Total', $clean_total, $error_total, $blm_entri_total); ?> -->
             </div>
         </div>
     </div>
