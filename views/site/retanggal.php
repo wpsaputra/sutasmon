@@ -9,14 +9,14 @@ use yii\bootstrap\Tabs;
 $this->title = 'Rincian Validasi (By Tanggal)';
 $this->params['breadcrumbs'][] = $this->title;
 
-$provider->pagination->pageParam = 'stu-page';
-$provider->sort->sortParam = 'stu-sort';
+$provider->pagination->pageParam = 'l1-page';
+$provider->sort->sortParam = 'l1-sort';
 
-$provider2->pagination->pageParam = 'spw-page';
-$provider2->sort->sortParam = 'spw-sort';
+$provider2->pagination->pageParam = 'l2-page';
+$provider2->sort->sortParam = 'l2-sort';
 
-$provider3->pagination->pageParam = 'spd-page';
-$provider3->sort->sortParam = 'spd-sort';
+$provider3->pagination->pageParam = 'total-page';
+$provider3->sort->sortParam = 'total-sort';
 
 $script = <<< JS
     $(function() {
@@ -89,25 +89,24 @@ function printGridView($data_provider){
 
 
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#home">Padi</a></li>
-        <li><a data-toggle="tab" href="#menu1">Palawija</a></li>
-        <li><a data-toggle="tab" href="#menu2">Peternakan</a></li>
-        <li><a data-toggle="tab" href="#menu3">Total</a></li>
+        <li class="active"><a data-toggle="tab" href="#home">Dokumen L1</a></li>
+        <li><a data-toggle="tab" href="#menu1">Dokumen L2</a></li>
+        <li><a data-toggle="tab" href="#menu2">Total</a></li>
     </ul>
 
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3>Padi</h3>
-                    <?php printGridView($provider3); ?>
+                    <h3>Dokumen L1</h3>
+                    <?php printGridView($provider); ?>
                 </div>
             </div>
         </div>
         <div id="menu1" class="tab-pane fade">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3>Palawija</h3>
+                    <h3>Dokumen L2</h3>
                     <?php printGridView($provider2); ?>
                 </div>
             </div>
@@ -115,16 +114,8 @@ function printGridView($data_provider){
         <div id="menu2" class="tab-pane fade">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3>Peternakan</h3>
-                    <?php printGridView($provider); ?>
-                </div>
-            </div>
-        </div>
-        <div id="menu3" class="tab-pane fade">
-            <div class="row">
-                <div class="col-lg-12">
                     <h3>Total</h3>
-                    <?php printGridView($provider4); ?>
+                    <?php printGridView($provider); ?>
                 </div>
             </div>
         </div>
