@@ -457,14 +457,14 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
-        // Ternak
+        // L2
         $sql = '
             SELECT b.kode_operator, b.realname, b.count 
             FROM
             (SELECT [kode_operator], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_ternak]   
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_ternak].[kode_operator]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
+            FROM [SUTAS2018].[dbo].[l2_rt]   
+            LEFT JOIN [SUTAS2018].[dbo].[m_operator] 
+            ON [SUTAS2018].[dbo].[L2_rt].[kode_operator]=[SUTAS2018].[dbo].[m_operator].[id_operator]
             GROUP BY [kode_operator], [realname]) b
         ';
 
@@ -474,16 +474,15 @@ class SiteController extends Controller
             'count',
         ];
 
-        // Palawija
+        // L1
         $sql2 = "
-            SELECT b.kode_operator, b.realname, b.count
+            SELECT b.kode_operator, b.realname, b.count 
             FROM
             (SELECT [kode_operator], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_tp]
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_tp].[kode_operator]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            GROUP BY [kode_operator], [realname], [flag_dok]
-            HAVING [flag_dok]='spw') b
+            FROM [SUTAS2018].[dbo].[m_bs]   
+            LEFT JOIN [SUTAS2018].[dbo].[m_operator] 
+            ON [SUTAS2018].[dbo].[m_bs].[kode_operator]=[SUTAS2018].[dbo].[m_operator].[id_operator]
+            GROUP BY [kode_operator], [realname]) b
         ";
 
         $arr_sort_attributes2 = [
@@ -492,58 +491,33 @@ class SiteController extends Controller
             'count',
         ];
 
-        // Padi
-        $sql3 = "
-            SELECT b.kode_operator, b.realname, b.count
-            FROM
-            (SELECT [kode_operator], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_tp]
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_tp].[kode_operator]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            GROUP BY [kode_operator], [realname], [flag_dok]
-            HAVING [flag_dok]='spd') b
-        ";
-
-        $arr_sort_attributes3 = [
-            'kode_operator',
-            'realname',
-            'count',
-        ];
-
+        
         // Total
         $sql4 = "
-            SELECT x.kode_operator, x.realname, x.count
-            FROM
-            (
-            SELECT 
-                COALESCE(a.kode_operator, b.kode_operator, c.kode_operator) as [kode_operator]
-                , COALESCE(NULLIF(a.realname,''), NULLIF(b.realname,''), c.realname) as [realname]
-                , (ISNULL(a.count, 0) + ISNULL(b.count, 0) + ISNULL(c.count, 0)) AS [count] 
-            FROM
+        SELECT x.kode_operator, x.realname, x.count
+        FROM
+        (
+        SELECT 
+            COALESCE(a.kode_operator, b.kode_operator) as [kode_operator],
+            COALESCE(a.realname, b.realname) as [realname],
+            (ISNULL(a.count, 0) + ISNULL(b.count, 0)) AS [count]
+               
+        FROM
             (SELECT [kode_operator], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_ternak]   
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_ternak].[kode_operator]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
+            FROM [SUTAS2018].[dbo].[l2_rt]   
+            LEFT JOIN [SUTAS2018].[dbo].[m_operator] 
+            ON [SUTAS2018].[dbo].[L2_rt].[kode_operator]=[SUTAS2018].[dbo].[m_operator].[id_operator]
             GROUP BY [kode_operator], [realname]) a
-
+            
             FULL OUTER JOIN
             (SELECT [kode_operator], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_tp]
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_tp].[kode_operator]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            GROUP BY [kode_operator], [realname], [flag_dok]
-            HAVING [flag_dok]='spw') b
+            FROM [SUTAS2018].[dbo].[m_bs]   
+            LEFT JOIN [SUTAS2018].[dbo].[m_operator] 
+            ON [SUTAS2018].[dbo].[m_bs].[kode_operator]=[SUTAS2018].[dbo].[m_operator].[id_operator]
+            GROUP BY [kode_operator], [realname]) b
             ON a.kode_operator = b.kode_operator
+        )x
 
-            FULL OUTER JOIN
-            (SELECT [kode_operator], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_tp]
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_tp].[kode_operator]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            GROUP BY [kode_operator], [realname], [flag_dok]
-            HAVING [flag_dok]='spd') c
-            ON a.kode_operator = c.kode_operator
-            ) x
         ";
 
         $arr_sort_attributes4 = [
@@ -561,7 +535,6 @@ class SiteController extends Controller
         return $this->render('about', [
             'provider' => $this->getSqlDataProvider($sql, $arr_sort_attributes, $default_order),
             'provider2' => $this->getSqlDataProvider($sql2, $arr_sort_attributes2, $default_order),
-            'provider3' => $this->getSqlDataProvider($sql3, $arr_sort_attributes3, $default_order),
             'provider4' => $this->getSqlDataProvider($sql4, $arr_sort_attributes4, $default_order),
         ]);
     }
