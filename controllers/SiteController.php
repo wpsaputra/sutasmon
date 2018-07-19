@@ -691,14 +691,14 @@ class SiteController extends Controller
 
     public function actionRetotal()
     {
-        // Ternak
+        // L2
         $sql = '
             SELECT b.clean_by, b.realname, b.count 
             FROM
             (SELECT [clean_by], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_ternak]   
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_ternak].[clean_by]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
+            FROM [SUTAS2018].[dbo].[L2_rt_val]   
+            LEFT JOIN [SUTAS2018].[dbo].[m_operator] 
+            ON [SUTAS2018].[dbo].[L2_rt_val].[clean_by]=[SUTAS2018].[dbo].[m_operator].[id_operator]
             WHERE [clean_by] IS NOT NULL
             GROUP BY [clean_by], [realname]) b
         ';
@@ -709,17 +709,16 @@ class SiteController extends Controller
             'count',
         ];
 
-        // Palawija
+        // L1
         $sql2 = "
             SELECT b.clean_by, b.realname, b.count
             FROM
-            (SELECT [clean_by], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_tp]
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_tp].[clean_by]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            WHERE [clean_by] IS NOT NULL
-            GROUP BY [clean_by], [realname], [flag_dok]
-            HAVING [flag_dok]='spw') b
+            (SELECT [kode_operator] AS [clean_by], [realname], COUNT([jumlah_entri]) as [count]
+            FROM [SUTAS2018].[dbo].[m_bs_val]   
+            LEFT JOIN [SUTAS2018].[dbo].[m_operator] 
+            ON [SUTAS2018].[dbo].[m_bs_val].[kode_operator]=[SUTAS2018].[dbo].[m_operator].[id_operator]
+            WHERE [kode_operator] IS NOT NULL AND [status_dok] = 'C'
+            GROUP BY [kode_operator], [realname]) b
         ";
 
         $arr_sort_attributes2 = [
@@ -728,64 +727,40 @@ class SiteController extends Controller
             'count',
         ];
 
-        // Padi
-        $sql3 = "
-            SELECT b.clean_by, b.realname, b.count
-            FROM
-            (SELECT [clean_by], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_tp]
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_tp].[clean_by]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            WHERE [clean_by] IS NOT NULL
-            GROUP BY [clean_by], [realname], [flag_dok]
-            HAVING [flag_dok]='spd') b
-        ";
-
-        $arr_sort_attributes3 = [
-            'clean_by',
-            'realname',
-            'count',
-        ];
 
         // Total
-        $sql4 = "
+        $sql3 = "
             SELECT x.clean_by, x.realname, x.count
             FROM
             (
             SELECT 
-                COALESCE(a.clean_by, b.clean_by, c.clean_by) as [clean_by]
-                , COALESCE(NULLIF(a.realname,''), NULLIF(b.realname,''), c.realname) as [realname]
-                , (ISNULL(a.count, 0) + ISNULL(b.count, 0) + ISNULL(c.count, 0)) AS [count] 
+                COALESCE(a.clean_by, b.clean_by) as [clean_by]
+                , COALESCE(NULLIF(a.realname,''), NULLIF(b.realname,'')) as [realname]
+                , (ISNULL(a.count, 0) + ISNULL(b.count, 0) ) AS [count] 
             FROM
-            (SELECT [clean_by], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_ternak]   
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_ternak].[clean_by]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            GROUP BY [clean_by], [realname]) a
+            (SELECT [kode_operator] AS [clean_by], [realname], COUNT([jumlah_entri]) as [count]
+            FROM [SUTAS2018].[dbo].[m_bs_val]   
+            LEFT JOIN [SUTAS2018].[dbo].[m_operator] 
+            ON [SUTAS2018].[dbo].[m_bs_val].[kode_operator]=[SUTAS2018].[dbo].[m_operator].[id_operator]
+            WHERE [kode_operator] IS NOT NULL AND [status_dok] = 'C'
+            GROUP BY [kode_operator], [realname]) a
 
             FULL OUTER JOIN
             (SELECT [clean_by], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_tp]
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_tp].[clean_by]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            GROUP BY [clean_by], [realname], [flag_dok]
-            HAVING [flag_dok]='spw') b
+            FROM [SUTAS2018].[dbo].[L2_rt_val]   
+            LEFT JOIN [SUTAS2018].[dbo].[m_operator] 
+            ON [SUTAS2018].[dbo].[L2_rt_val].[clean_by]=[SUTAS2018].[dbo].[m_operator].[id_operator]
+            WHERE [clean_by] IS NOT NULL
+            GROUP BY [clean_by], [realname]) b
             ON a.clean_by = b.clean_by
 
-            FULL OUTER JOIN
-            (SELECT [clean_by], [realname], COUNT([jumlah_entri]) as [count]
-            FROM [SOUT2017Sampel].[dbo].[t_rt_tp]
-            LEFT JOIN [SOUT2017Sampel].[dbo].[m_operator] 
-            ON [SOUT2017Sampel].[dbo].[t_rt_tp].[clean_by]=[SOUT2017Sampel].[dbo].[m_operator].[id_operator]
-            GROUP BY [clean_by], [realname], [flag_dok]
-            HAVING [flag_dok]='spd') c
-            ON a.clean_by = c.clean_by
+            
             ) x
             WHERE x.clean_by IS NOT NULL
 
         ";
 
-        $arr_sort_attributes4 = [
+        $arr_sort_attributes3 = [
             'clean_by',
             'realname',
             'count',
@@ -801,7 +776,7 @@ class SiteController extends Controller
             'provider' => $this->getSqlDataProvider($sql, $arr_sort_attributes, $default_order),
             'provider2' => $this->getSqlDataProvider($sql2, $arr_sort_attributes2, $default_order),
             'provider3' => $this->getSqlDataProvider($sql3, $arr_sort_attributes3, $default_order),
-            'provider4' => $this->getSqlDataProvider($sql4, $arr_sort_attributes4, $default_order),
+            // 'provider4' => $this->getSqlDataProvider($sql4, $arr_sort_attributes4, $default_order),
         ]);
     }
 
